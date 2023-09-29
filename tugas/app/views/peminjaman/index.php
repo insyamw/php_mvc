@@ -13,7 +13,7 @@
     <br>
     <br>
 
-    <table class="table table-success table-striped table-bordered">
+    <table class="table table-striped table-bordered">
         <thead>
             <tr>
                 <th scope="col">#</th>
@@ -35,11 +35,13 @@
                     <td><?= $row['jenis_barang'] ?></td>
                     <td><?= $row['no_barang'] ?></td>
                     <td><?= $row['tgl_pinjam'] ?></td>
-                    <td><?= $row['tgl_kembali'] ?></td>
-                    <td><?= $row['status'] == 'Belum Kembali' ? '<span class="badge bg-danger">' : '<span class="badge bg-success">' ?><?= $row['status'] ?></span></td>
+                    <td><?= $row['tgl_kembali'] ? $row['tgl_kembali'] : date('Y-m-d H:i', strtotime("+2 day", strtotime($row['tgl_pinjam']))) ?></td>
+                    <td><?= $row['tgl_kembali'] ? '<span class="badge bg-success">Sudah Kembali</span>' : '<span class="badge bg-danger">Belum Kembali</span>' ?></td>
                     <td>
-                        <a href="<?= BASE_URL; ?>/peminjaman/edit/<?= $row['id'] ?>" class="btn btn-primary">Edit</a>
-                        <a href="<?= BASE_URL; ?>/peminjaman/hapus/<?= $row['id'] ?>" class="btn btn-primary" onclick="return confirm('Hapus data?')">Hapus</a>
+                        <?php if (!$row['tgl_kembali']) { ?>
+                            <a href="<?= BASE_URL; ?>/peminjaman/edit/<?= $row['id'] ?>" class="btn btn-primary">Edit</a>
+                        <?php } ?>
+                        <a href="<?= BASE_URL; ?>/peminjaman/hapus/<?= $row['id'] ?>" class="btn btn-danger" onclick="return confirm('Hapus data?')">Hapus</a>
                     </td>
                 </tr>
             <?php $no++;

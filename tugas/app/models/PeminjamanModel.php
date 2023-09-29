@@ -17,7 +17,6 @@ class PeminjamanModel
         if (isset($data['search'])) {
             $filterQuery .= ' AND nama_peminjam LIKE "%' . $data['search'] . '%"';
             $filterQuery .= ' OR jenis_barang LIKE "%' . $data['search'] . '%"';
-            $filterQuery .= ' OR no_barang LIKE "%' . $data['search'] . '%"';
         }
 
         $this->db->query("SELECT * FROM " . $this->table . $filterQuery);
@@ -33,29 +32,35 @@ class PeminjamanModel
 
     public function tambahPeminjaman($data)
     {
-        $query = "INSERT INTO tb_peminjaman (nama_peminjam, jenis_barang, no_barang, tgl_pinjam, tgl_kembali, status) VALUES(:nama_peminjam, :jenis_barang, :no_barang, :tgl_pinjam, :tgl_kembali, :status)";
+        $query = "INSERT INTO tb_peminjaman (nama_peminjam, jenis_barang, no_barang, tgl_pinjam) VALUES(:nama_peminjam, :jenis_barang, :no_barang, :tgl_pinjam)";
         $this->db->query($query);
         $this->db->bind('nama_peminjam', $data['nama_peminjam']);
         $this->db->bind('jenis_barang', $data['jenis_barang']);
         $this->db->bind('no_barang', $data['no_barang']);
         $this->db->bind('tgl_pinjam', $data['tgl_pinjam']);
-        $this->db->bind('tgl_kembali', date('Y-m-d H:i', strtotime("+2 day", strtotime($data['tgl_pinjam']))));
-        $this->db->bind('status', "Belum Kembali");
         $this->db->execute();
         return $this->db->rowCount();
     }
 
     public function updateDataPeminjaman($data)
     {
-        $query = "UPDATE tb_peminjaman SET nama_peminjam=:nama_peminjam, jenis_barang=:jenis_barang, no_barang=:no_barang, tgl_pinjam=:tgl_pinjam, tgl_kembali=:tgl_kembali, status=:status WHERE id=:id";
+        $query = "UPDATE tb_peminjaman SET nama_peminjam=:nama_peminjam, jenis_barang=:jenis_barang, no_barang=:no_barang, tgl_pinjam=:tgl_pinjam, tgl_kembali=:tgl_kembali WHERE id=:id";
         $this->db->query($query);
         $this->db->bind('id', $data['id']);
         $this->db->bind('nama_peminjam', $data['nama_peminjam']);
         $this->db->bind('jenis_barang', $data['jenis_barang']);
         $this->db->bind('no_barang', $data['no_barang']);
         $this->db->bind('tgl_pinjam', $data['tgl_pinjam']);
-        $this->db->bind('tgl_kembali', $data['tgl_kembali']);
-        $this->db->bind('status', $data['status']);
+
+        // cek apabila inputan tgl_kembali di isi di form edit
+        if ($data['tgl_kembali'] != null) {
+            $tgl_kembali = $data['tgl_kembali'];
+        } else {
+            $tgl_kembali = null;
+        }
+
+        $this->db->bind('tgl_kembali', $tgl_kembali);
+
         $this->db->execute();
 
         return $this->db->rowCount();

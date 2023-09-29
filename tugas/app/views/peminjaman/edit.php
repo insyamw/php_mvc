@@ -25,14 +25,7 @@
             </div>
             <div class="form-group mb-3">
                 <label for="tgl_kembali">Tanggal Kembali</label>
-                <input type="datetime-local" class="form-control" id="tgl_kembali" name="tgl_kembali" value="<?= $data['peminjaman']['tgl_kembali'] ?>" required>
-            </div>
-            <div class="form-group mb-3">
-                <label for="status">Status</label>
-                <select class="form-control form-control-select" name="status" id="status" required>
-                    <option value="Belum Kembali" <?= $data['peminjaman']['status'] == 'Belum Kembali' ? 'selected' : null ?>>Belum Kembali</option>
-                    <option value="Sudah Kembali" <?= $data['peminjaman']['status'] == 'Sudah Kembali' ? 'selected' : null ?>>Sudah Kembali</option>
-                </select>
+                <input type="datetime-local" class="form-control" id="tgl_kembali" name="tgl_kembali">
             </div>
         </div>
         <div class="card-footer">
